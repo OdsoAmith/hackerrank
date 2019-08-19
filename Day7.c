@@ -1,17 +1,75 @@
-/*Given an array,A ,of N integers,print A's elements in reverse order as a single line of space-separated numbers.*/
+/*Write a factorial function that takes a positive integer,N  as a parameter and prints the result of N!(N factorial).*/
+#include <assert.h>
+#include <limits.h>
+#include <math.h>
+#include <stdbool.h>
+#include <stddef.h>
+#include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+char* readline();
+
+// Complete the factorial function below.
+int factorial(int n) {
+    int sum=1;
+    scanf("%d",&n);
+    for(int i=1;i<=n;i++)
+    {
+        sum=sum*i;
+    }
+    return sum;
+
+}
+
 int main()
 {
-    int a[1000];
-    int n,i;
-    scanf("%d",&n);
-    for(i=0;i<n;i++)
-    {
-            scanf("%d",&a[i]);
-    }
-    for(int j=n-1;j>=0;j--)
-    {
-        printf("%d ",a[j]);
-    }
+    FILE* fptr = fopen(getenv("OUTPUT_PATH"), "w");
+
+    char* n_endptr;
+    char* n_str = readline();
+    int n = strtol(n_str, &n_endptr, 10);
+
+    if (n_endptr == n_str || *n_endptr != '\0') { exit(EXIT_FAILURE); }
+
+    int result = factorial(n);
+
+    fprintf(fptr, "%d\n", result);
+
+    fclose(fptr);
+
     return 0;
+}
+
+char* readline() {
+    size_t alloc_length = 1024;
+    size_t data_length = 0;
+    char* data = malloc(alloc_length);
+
+    while (true) {
+        char* cursor = data + data_length;
+        char* line = fgets(cursor, alloc_length - data_length, stdin);
+
+        if (!line) { break; }
+
+        data_length += strlen(cursor);
+
+        if (data_length < alloc_length - 1 || data[data_length - 1] == '\n') { break; }
+
+        size_t new_length = alloc_length << 1;
+        data = realloc(data, new_length);
+
+        if (!data) { break; }
+
+        alloc_length = new_length;
+    }
+
+    if (data[data_length - 1] == '\n') {
+        data[data_length - 1] = '\0';
+    }
+
+    data = realloc(data, data_length);
+
+    return data;
 }
